@@ -1,20 +1,20 @@
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 public class Main extends Application
 {
@@ -27,50 +27,58 @@ public class Main extends Application
     }
 
     @Override public void start(Stage stage) {
-        EventHandler<MouseEvent> btn_handler = new EventHandler<MouseEvent>() {
+        Group prim_root=new Group();
+        VBox setup_root=new VBox();
+        Label lbl_currentTime=new Label("Current Time");
+        TextArea txta_currentTime=new TextArea();
+        Label lbl_currentDate=new Label("Current Date");
+        TextArea txta_currentDate=new TextArea();
+        Label lbl_currentBattery=new Label("Current Battery");
+        TextArea txta_currentBattery=new TextArea();
+        Label lbl_currentSong=new Label("Current Song");
+        TextArea txta_currentSong=new TextArea();
+        Button btn_submit=new Button("Confirm");
+
+        Image img=new Image("/pics/horizon.jpg");
+        Rectangle background=new Rectangle(410, 796);
+        background.setFill(new ImagePattern(img));
+
+        setup_root.setPrefHeight(796);
+        setup_root.setPrefWidth(410);
+
+        txta_currentDate.setPrefRowCount(1);
+        txta_currentTime.setPrefRowCount(1);
+        txta_currentBattery.setPrefRowCount(1);
+        txta_currentSong.setPrefRowCount(1);
+
+        lbl_currentDate.setTextFill(Color.WHITE);
+        lbl_currentTime.setTextFill(Color.WHITE);
+        lbl_currentBattery.setTextFill(Color.WHITE);
+        lbl_currentSong.setTextFill(Color.WHITE);
+
+
+        EventHandler<MouseEvent> handleSetup = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                try {
-                    //int v = Integer.parseInt(txtValue.getText());
-                    //gb.setValue(v);
-                }
-                catch(Exception ex) {
-                    System.out.println("Input Exception!");
-                }
+                smartphone.draw(txta_currentDate.getText(), txta_currentTime.getText(), txta_currentBattery.getText(), txta_currentSong.getText());
 
+                VBox smartphone_root = new VBox();
+                smartphone_root.setSpacing(20);
+                smartphone_root.getChildren().addAll(smartphone);
+
+                Scene smartphone_scene=new Scene(smartphone_root);
+                stage.setScene(smartphone_scene);
             }
         };
 
-        //gb.init(500, 500);
-        //gb.setValue(45);
-        smartphone.draw();
+        btn_submit.setOnMouseClicked(handleSetup);
 
-        /*
-        Button btnValue = new Button();
-        btnValue.setText("New Value");
-        btnValue.addEventHandler(MouseEvent.MOUSE_CLICKED, btn_handler);
+        setup_root.getChildren().addAll(lbl_currentDate, txta_currentDate, lbl_currentTime, txta_currentTime, lbl_currentBattery, txta_currentBattery, lbl_currentSong, txta_currentSong, btn_submit);
+        prim_root.getChildren().addAll(background, setup_root);
 
-
-
-
-        Timeline musicPlayer = new Timeline(
-                new KeyFrame(Duration.seconds(0.05),
-                        new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent event) {
-                                gb.update();
-                            }
-                        }));
-        musicPlayer.setCycleCount(Timeline.INDEFINITE);
-        musicPlayer.play();
-*/
-        VBox vBox = new VBox();
-        vBox.setPadding(new Insets(10, 50, 50, 50));
-        vBox.setSpacing(20);
-        vBox.getChildren().addAll(smartphone);
 
         //Creating a Scene
-        Scene scene = new Scene(vBox);
+        Scene scene = new Scene(prim_root);
 
         //Setting title to the scene
         stage.setTitle("Gauge Collection");

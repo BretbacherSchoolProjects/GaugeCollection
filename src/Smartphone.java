@@ -23,7 +23,7 @@ public class Smartphone extends Group {
     private int minutes=0;
     private int seconds=0;
 
-    public void draw(){
+    public void draw(String currentDate, String currentTime, String currentBattery, String currentSong){
         VBox phone_root=new VBox();
         Rectangle phoneBase=new Rectangle(width, height);
 
