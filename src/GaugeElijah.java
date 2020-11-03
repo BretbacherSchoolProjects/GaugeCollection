@@ -6,6 +6,7 @@ import java.util.Timer;
 
 public class GaugeElijah extends GaugeBase{
     private int currentDuration=0;
+    private int maxDuration=300;    //5min
 
     @Override
     public void redraw() {
@@ -13,9 +14,9 @@ public class GaugeElijah extends GaugeBase{
         Line line=new Line();
         Circle point=new Circle(5);
         line.setStartX(50);
-        line.setStartY(100);
-        line.setEndY(100);
-        line.setEndX(200);
+        line.setStartY(400);
+        line.setEndY(400);
+        line.setEndX(350);
         point.setCenterX(line.getStartX()+currentDuration);
         point.setCenterY(line.getStartY());
         if (point.getCenterX()>=line.getEndX()){
@@ -23,8 +24,8 @@ public class GaugeElijah extends GaugeBase{
         }else{
             currentDuration++;
         }
-        line.setFill(Color.BLACK);
-        point.setFill(Color.BLACK);
+        line.setStroke(Color.WHITE);
+        point.setFill(Color.WHITE);
         this.getChildren().addAll(line, point);
     }
 
@@ -39,7 +40,19 @@ public class GaugeElijah extends GaugeBase{
         redraw();
     }
 
-    public void update(){
-        redraw();
+    public int getCurrentDuration() {
+        return currentDuration;
+    }
+
+    public void setCurrentDuration(int currentDuration) {
+        this.currentDuration = currentDuration;
+    }
+
+    public int getMaxDuration() {
+        return maxDuration;
+    }
+
+    public void setMaxDuration(int maxDuration) {
+        this.maxDuration = maxDuration;
     }
 }
