@@ -9,6 +9,7 @@ public class GaugeElijah extends GaugeBase{
 
     @Override
     public void redraw() {
+        this.getChildren().clear();
         Line line=new Line();
         Circle point=new Circle(5);
         line.setStartX(50);
@@ -17,6 +18,11 @@ public class GaugeElijah extends GaugeBase{
         line.setEndX(200);
         point.setCenterX(line.getStartX()+currentDuration);
         point.setCenterY(line.getStartY());
+        if (point.getCenterX()>=line.getEndX()){
+            currentDuration=0;
+        }else{
+            currentDuration++;
+        }
         line.setFill(Color.BLACK);
         point.setFill(Color.BLACK);
         this.getChildren().addAll(line, point);
@@ -34,8 +40,6 @@ public class GaugeElijah extends GaugeBase{
     }
 
     public void update(){
-        currentDuration++;
         redraw();
-        System.out.println("finished");
     }
 }
