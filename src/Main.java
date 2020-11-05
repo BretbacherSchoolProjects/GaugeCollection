@@ -38,10 +38,10 @@ public class Main extends Application
         Button btn_submit=new Button("Confirm");
 
         Image img=new Image("/pics/horizon.jpg");
-        Rectangle background=new Rectangle(410, 796);
+        Rectangle background=new Rectangle(410, 706);
         background.setFill(new ImagePattern(img));
 
-        setup_root.setPrefHeight(796);
+        setup_root.setPrefHeight(706);
         setup_root.setPrefWidth(410);
 
         txta_currentDate.setPrefRowCount(1);

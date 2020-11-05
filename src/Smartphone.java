@@ -16,10 +16,10 @@ import javafx.util.Duration;
 public class Smartphone extends Group {
     GaugeElijah gauge1=new GaugeElijah();
     GaugeElijah gauge2=new GaugeElijah();
-    GaugeElijah gauge3=new GaugeElijah();
+    GaugeMax gauge_battery=new GaugeMax();
     GaugeElijah gauge4=new GaugeElijah();
     private int width=410;
-    private int height=796;
+    private int height=706;
     private int minutes=0;
     private int seconds=0;
 
@@ -34,8 +34,12 @@ public class Smartphone extends Group {
 
         Rectangle timeBase=new Rectangle(width-100, 200);
 
-        Rectangle batteryBase=new Rectangle(width-200, 120);
-
+        try {
+            gauge_battery.setValue(Integer.parseInt(currentBattery));
+        }catch(Exception e){
+            gauge_battery.setValue(0);
+        }
+        //Rectangle batteryBase=new Rectangle(width-200, 120);
         Image img=new Image("/pics/stars.jpg");
         phoneBase.setFill(new ImagePattern(img));
         music_root.setPrefWidth(width-10);
@@ -45,7 +49,7 @@ public class Smartphone extends Group {
         currentDuration.setTextFill(Color.WHITE);
         maxDuration.setTextFill(Color.WHITE);
         timeBase.setFill(Color.DARKRED);
-        batteryBase.setFill(Color.DARKBLUE);
+        //batteryBase.setFill(Color.DARKBLUE);
 
         Timeline musicPlayer = new Timeline(
                 new KeyFrame(Duration.seconds(0.05),
@@ -84,7 +88,7 @@ public class Smartphone extends Group {
         duration_root.getChildren().addAll(currentDuration, maxDuration);
         music_root.getChildren().addAll(gauge1, duration_root);
 
-        phone_root.getChildren().addAll(timeBase, music_root, batteryBase);
+        phone_root.getChildren().addAll(timeBase, music_root, gauge_battery);
         this.getChildren().addAll(phoneBase, phone_root);
     }
 }
