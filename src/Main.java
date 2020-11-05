@@ -14,8 +14,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-
-
 public class Main extends Application
 {
     Smartphone smartphone=new Smartphone();
