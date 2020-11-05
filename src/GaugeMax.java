@@ -17,23 +17,26 @@ public class GaugeMax extends GaugeBase {
         battery.setY(0);
         battery.setWidth(204);
         battery.setHeight(64);
-        battery.setStroke(Color.GREY);
-
+        battery.setStroke(Color.WHITE);
+        battery.setArcWidth(20);
+        battery.setArcHeight(20);
 
         Rectangle tip = new Rectangle();
-        tip.setY(0);
-        tip.setX(200-10);
+        tip.setY(16);
+        tip.setX(204-10);
         tip.setWidth(20);
         tip.setHeight(30);
+        tip.setFill(Color.WHITE);
         tip.setArcWidth(10);
         tip.setArcHeight(10);
-        tip.setFill(Color.GREY);
 
 
         Text t = new Text();
-        t.setText(String.valueOf(this.value));
+        t.setText(String.valueOf(this.value + " %"));
         t.setFont(Font.font ("Verdana", 30));
         t.setFill(Color.WHITE);
+        t.setLayoutY(-10);
+        t.setLayoutX(-20);
 
 
         //calculate center
@@ -43,13 +46,16 @@ public class GaugeMax extends GaugeBase {
         if(value>100)
             value=100;
 
+        if(value == 100)
+            t.setLayoutX(-30);
+
         Rectangle charge = new Rectangle();
 
         for(int i=0;i<value;i++){
 
-            charge.setX(2+20*(i/10));
+            charge.setX(2);
             charge.setY(2);
-            charge.setWidth(20);
+            charge.setWidth(2*value);
             charge.setHeight(60);
             charge.setArcWidth(20);
             charge.setArcHeight(20);
@@ -57,21 +63,19 @@ public class GaugeMax extends GaugeBase {
             if (value==0){
                 charge.setFill(Color.GRAY);
             }
-            else if (value!=0 && value<=33){
+            else if (value!=0 && value<=20){
                 charge.setFill(Color.RED);
             }
-            else if (33<value && value<=66){
-                charge.setFill(Color.YELLOW);
+            else if (20<value && value<=60){
+                charge.setFill(Color.ORANGE);
             }
-            else if (value>=66) {
-                charge.setFill(Color.GREEN);
+            else if (value>=60) {
+                charge.setFill(Color.LIMEGREEN);
             }
 
         }
 
-
-
-        this.getChildren().addAll(battery, tip, t, charge);
+        this.getChildren().addAll(tip, battery , charge, t);
     }
 
 
