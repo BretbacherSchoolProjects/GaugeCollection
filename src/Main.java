@@ -1,6 +1,5 @@
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,7 +16,6 @@ import javafx.stage.Stage;
 public class Main extends Application
 {
     Smartphone smartphone=new Smartphone();
-    //TextField txtValue = new TextField();
 
     public static void main(String[] args) {
         // Launch the JavaFX application
@@ -25,8 +23,11 @@ public class Main extends Application
     }
 
     @Override public void start(Stage stage) {
+        //the root displayed at the start
         Group prim_root=new Group();
         VBox setup_root=new VBox();
+
+        //Inputs and their Labels
         Label lbl_currentTime=new Label("Current Time");
         TextArea txta_currentTime=new TextArea();
         Label lbl_currentDate=new Label("Current Date");
@@ -34,9 +35,10 @@ public class Main extends Application
         Label lbl_currentBattery=new Label("Current Battery");
         TextArea txta_currentBattery=new TextArea();
         Label lbl_currentSong=new Label("Current Song");
-        TextArea txta_currentSong=new TextArea();
+        TextArea txta_currentSong=new TextArea(smartphone.gauge_music.getSong().getText());
         Button btn_submit=new Button("Confirm");
 
+        //Styling
         Image img=new Image("/pics/horizon.jpg");
         Rectangle background=new Rectangle(410, 706);
         background.setFill(new ImagePattern(img));
@@ -54,33 +56,39 @@ public class Main extends Application
         lbl_currentBattery.setTextFill(Color.WHITE);
         lbl_currentSong.setTextFill(Color.WHITE);
 
-
+        //EventHandlers
+        //This handler is called when the setup is complete
         EventHandler<MouseEvent> handleSetup = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                //Show the smartphone
                 smartphone.draw(txta_currentDate.getText(), txta_currentTime.getText(), txta_currentBattery.getText(), txta_currentSong.getText());
 
+                //main root for the smartphone
                 VBox smartphone_root = new VBox();
+
+                //Styling
                 smartphone_root.setSpacing(20);
+
+                //Adding
                 smartphone_root.getChildren().addAll(smartphone);
 
+                //Window settings
                 Scene smartphone_scene=new Scene(smartphone_root);
                 stage.setScene(smartphone_scene);
             }
         };
 
+        //Assign handlers
         btn_submit.setOnMouseClicked(handleSetup);
 
+        //Add everything
         setup_root.getChildren().addAll(lbl_currentDate, txta_currentDate, lbl_currentTime, txta_currentTime, lbl_currentBattery, txta_currentBattery, lbl_currentSong, txta_currentSong, btn_submit);
         prim_root.getChildren().addAll(background, setup_root);
 
-
-        //Creating a Scene
+        //Window Settings
         Scene scene = new Scene(prim_root);
-
-        //Setting title to the scene
         stage.setTitle("Gauge Collection");
-        //Adding the scene to the stage
         stage.setScene(scene);
         stage.setResizable(false);
 

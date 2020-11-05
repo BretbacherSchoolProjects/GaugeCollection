@@ -14,8 +14,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Smartphone extends Group {
-    GaugeElijah gauge1=new GaugeElijah();
-    GaugeElijah gauge2=new GaugeElijah();
+
+    //Global scopes
+    GaugeElijah gauge_music =new GaugeElijah();
+    GaugeNevena gauge_timeDisplay = new GaugeNevena();
     GaugeMax gauge_battery=new GaugeMax();
     GaugeElijah gauge4=new GaugeElijah();
     private int width=410;
@@ -23,7 +25,9 @@ public class Smartphone extends Group {
     private int minutes=0;
     private int seconds=0;
 
+    //main function. param: the input of the setup scene
     public void draw(String currentDate, String currentTime, String currentBattery, String currentSong){
+        //Variables
         VBox phone_root=new VBox();
         Rectangle phoneBase=new Rectangle(width, height);
 
@@ -32,14 +36,20 @@ public class Smartphone extends Group {
         Label currentDuration=new Label();
         Label maxDuration=new Label("5:00");
 
-        Rectangle timeBase=new Rectangle(width-100, 200);
-
         try {
             gauge_battery.setValue(Integer.parseInt(currentBattery));
         }catch(Exception e){
             gauge_battery.setValue(0);
         }
         //Rectangle batteryBase=new Rectangle(width-200, 120);
+        //Styling
+        //clock gauge
+        VBox vbx_timeDisplay = new VBox();
+        vbx_timeDisplay.setPrefSize(width-100, 150);
+        vbx_timeDisplay.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+        gauge_timeDisplay.setLabelWidth(400);
+        Rectangle batteryBase=new Rectangle(width-200, 120);
+
         Image img=new Image("/pics/stars.jpg");
         phoneBase.setFill(new ImagePattern(img));
         music_root.setPrefWidth(width-10);
@@ -48,24 +58,25 @@ public class Smartphone extends Group {
                 "-fx-opacity: 0.80;");
         currentDuration.setTextFill(Color.WHITE);
         maxDuration.setTextFill(Color.WHITE);
-        timeBase.setFill(Color.DARKRED);
-        //batteryBase.setFill(Color.DARKBLUE);
 
+        //The Timeline the music follows
         Timeline musicPlayer = new Timeline(
-                new KeyFrame(Duration.seconds(0.05),
+                new KeyFrame(Duration.seconds(1),
                         new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                gauge1.redraw();
-                                if (gauge1.getCurrentDuration()%60==0 && gauge1.getCurrentDuration()!=0){
-                                    minutes++;
-                                    seconds=0;
-                                }else{
-                                    seconds++;
-                                }
-                                if (gauge1.getCurrentDuration()==300){
-                                    minutes=0;
-                                    seconds=0;
+                                if (!gauge_music.getIsStopped()[0]) {
+                                    gauge_music.setValue(currentSong);
+                                    if (gauge_music.getCurrentDuration() % 60 == 0 && gauge_music.getCurrentDuration() != 0) {
+                                        minutes++;
+                                        seconds = 0;
+                                    } else {
+                                        seconds++;
+                                    }
+                                    if (gauge_music.getCurrentDuration() == 300) {
+                                        minutes = 0;
+                                        seconds = 0;
+                                    }
                                 }
 
                                 currentDuration.setText(String.format(minutes + ":%02d", seconds));
@@ -74,9 +85,12 @@ public class Smartphone extends Group {
         musicPlayer.setCycleCount(Timeline.INDEFINITE);
         musicPlayer.play();
 
+        //Positioning
         phone_root.setPadding(new Insets(50, 5, 5, 5));
         phone_root.setAlignment(Pos.CENTER);
         phone_root.setSpacing(25);
+
+        gauge_timeDisplay.setValue(currentTime);
 
         duration_root.setPrefWidth(music_root.getWidth());
         duration_root.setSpacing(255);
@@ -85,10 +99,13 @@ public class Smartphone extends Group {
         music_root.setAlignment(Pos.CENTER);
         music_root.setSpacing(-10);
 
+        //Adding
         duration_root.getChildren().addAll(currentDuration, maxDuration);
-        music_root.getChildren().addAll(gauge1, duration_root);
+        music_root.getChildren().addAll(gauge_music, duration_root);
+        vbx_timeDisplay.getChildren().addAll(gauge_timeDisplay);
 
-        phone_root.getChildren().addAll(timeBase, music_root, gauge_battery);
+        phone_root.getChildren().addAll(vbx_timeDisplay, music_root, gauge_battery);
+
         this.getChildren().addAll(phoneBase, phone_root);
     }
 }
