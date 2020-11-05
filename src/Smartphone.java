@@ -15,11 +15,11 @@ import javafx.util.Duration;
 
 public class Smartphone extends Group {
     GaugeElijah gauge1=new GaugeElijah();
-    GaugeElijah gauge2=new GaugeElijah();
+    GaugeNevena gauge_timeDisplay = new GaugeNevena();
     GaugeElijah gauge3=new GaugeElijah();
     GaugeElijah gauge4=new GaugeElijah();
     private int width=410;
-    private int height=796;
+    private int height=786;
     private int minutes=0;
     private int seconds=0;
 
@@ -32,9 +32,14 @@ public class Smartphone extends Group {
         Label currentDuration=new Label();
         Label maxDuration=new Label("5:00");
 
-        Rectangle timeBase=new Rectangle(width-100, 200);
+        //clock gauge
+        VBox vbx_timeDisplay = new VBox();
+        vbx_timeDisplay.setPrefSize(width-100, 150);
+        vbx_timeDisplay.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+        gauge_timeDisplay.setLabelWidth(400);
 
         Rectangle batteryBase=new Rectangle(width-200, 120);
+
 
         Image img=new Image("/pics/stars.jpg");
         phoneBase.setFill(new ImagePattern(img));
@@ -44,7 +49,6 @@ public class Smartphone extends Group {
                 "-fx-opacity: 0.80;");
         currentDuration.setTextFill(Color.WHITE);
         maxDuration.setTextFill(Color.WHITE);
-        timeBase.setFill(Color.DARKRED);
         batteryBase.setFill(Color.DARKBLUE);
 
         Timeline musicPlayer = new Timeline(
@@ -74,6 +78,8 @@ public class Smartphone extends Group {
         phone_root.setAlignment(Pos.CENTER);
         phone_root.setSpacing(25);
 
+        gauge_timeDisplay.setValue(currentTime);
+
         duration_root.setPrefWidth(music_root.getWidth());
         duration_root.setSpacing(255);
         duration_root.setPadding(new Insets(20));
@@ -81,10 +87,12 @@ public class Smartphone extends Group {
         music_root.setAlignment(Pos.CENTER);
         music_root.setSpacing(-10);
 
+
         duration_root.getChildren().addAll(currentDuration, maxDuration);
         music_root.getChildren().addAll(gauge1, duration_root);
+        vbx_timeDisplay.getChildren().addAll(gauge_timeDisplay);
 
-        phone_root.getChildren().addAll(timeBase, music_root, batteryBase);
+        phone_root.getChildren().addAll(vbx_timeDisplay, music_root, batteryBase);
         this.getChildren().addAll(phoneBase, phone_root);
     }
 }
